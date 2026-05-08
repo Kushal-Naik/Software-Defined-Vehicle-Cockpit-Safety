@@ -29,8 +29,12 @@ The system reads directly from the **BCM2711 GPIO registers** via `mmap_device_i
 * **HC-SR04 Ultrasonic Sensor:** Acts as the primary proximity "eye" for autonomous braking, constantly scanning for obstacles under 10cm.
 * **HC-SR501 PIR Motion Sensor:** Acts as the motion "guard" to confirm human presence before braking, eliminating false positives in the sensor fusion algorithm.
 * **MPU6050 6-DoF Accelerometer/Gyroscope:** Monitors vehicle inertia via I2C and detects high-G impacts (>3000 threshold) to trigger the last-resort crash failsafe.
-* **A3144 Hall Effect Sensor:** Measures the magnetic pulses of the motor/wheel assembly to calculate real-time RPM for the telemetry dashboard.
+* **HW-484 Hall Effect Sensor:** Measures the magnetic pulses of the motor/wheel assembly to calculate real-time RPM for the telemetry dashboard.
 * **TTP223 Capacitive Touch Sensor:** Serves as the highest-priority physical hardware interrupt (`SCHED_FIFO p=63`) to manually toggle the motor state.
+  
+### Actuators & Logic
+* **Autonomous Braking (Sensor Fusion):** The logic requires BOTH the PIR (Motion) and Ultrasonic (Proximity) to trigger simultaneously before firing an IPC pulse to cut motor power.
+* **Failsafe Relay:** The motor is wired to the `Normally Open (NO)` terminal of a 5V relay. The QNX software uses a high-impedance hardware trick to hold the circuit closed. If the OS panics or loses power, the relay snaps open, instantly stopping the motor.
 
 ### Master Wiring Matrix
 | Component | Signal | Pi Physical Pin | Notes |
