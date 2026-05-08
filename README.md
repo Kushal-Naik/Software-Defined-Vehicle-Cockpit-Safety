@@ -40,16 +40,17 @@ The system reads directly from the **BCM2711 GPIO registers** via `mmap_device_i
 | Component | Signal | Pi Physical Pin | Notes |
 | :--- | :--- | :--- | :--- |
 | **OLED (I2C)** | SDA / SCL | Pin 3 / 5 | Shared I2C1 Bus. |
-| **MPU6050 (I2C)** | SDA / SCL | Pin 3 / 5 | Shared I2C1 Bus (Add### Actuators & Logic
-* **Autonomous Braking (Sensor Fusion):** The logic requires BOTH the PIR (Motion) and Ultrasonic (Proximity) to trigger simultaneously before firing an IPC pulse to cut motor power.
-* **Failsafe Relay:** The motor is wired to the `Normally Open (NO)` terminal of a 5V relay. The QNX software uses a high-impedance hardware trick to hold the circuit closed. If the OS panics or loses power, the relay snaps open, instantly stopping the motor.
-ress `0x68`). |
+| **MPU6050 (I2C)** | SDA / SCL | Pin 3 / 5 | Shared I2C1 Bus (Address `0x68`). |
 | **Ultrasonic** | TRIG / ECHO | Pin 16 / 18 | **ECHO requires 1kΩ/2kΩ voltage divider.** |
 | **PIR Sensor** | OUT | Pin 22 | Native 3.3V logic. |
 | **Hall Effect** | OUT | Pin 11 | Requires 10kΩ pull-up to 3.3V. |
 | **Touch Sensor** | OUT | Pin 12 | Highest priority interrupt (FIFO p=63). |
 | **Motor Relay** | IN1 | Pin 13 | Active-LOW, requires 5V VCC on coil. |
 | **Buzzer** | (+) | Pin 15 | Requires 100Ω series resistor. |
+
+### Actuators & Logic
+* **Autonomous Braking (Sensor Fusion):** The logic requires BOTH the PIR (Motion) and Ultrasonic (Proximity) to trigger simultaneously before firing an IPC pulse to cut motor power.
+* **Failsafe Relay:** The motor is wired to the `Normally Open (NO)` terminal of a 5V relay. The QNX software uses a high-impedance hardware trick to hold the circuit closed. If the OS panics or loses power, the relay snaps open, instantly stopping the motor.
 
 ### Circuit Diagram
 <img width="3000" height="1349" alt="circuit_image" src="https://github.com/user-attachments/assets/eb21b719-d1ba-4e19-9582-49ae62b38281" />
