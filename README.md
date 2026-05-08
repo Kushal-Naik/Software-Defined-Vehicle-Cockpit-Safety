@@ -48,10 +48,6 @@ The system reads directly from the **BCM2711 GPIO registers** via `mmap_device_i
 | **Motor Relay** | IN1 | Pin 13 | Active-LOW, requires 5V VCC on coil. |
 | **Buzzer** | (+) | Pin 15 | Requires 100Ω series resistor. |
 
-### Actuators & Logic
-* **Autonomous Braking (Sensor Fusion):** The logic requires BOTH the PIR (Motion) and Ultrasonic (Proximity) to trigger simultaneously before firing an IPC pulse to cut motor power.
-* **Failsafe Relay:** The motor is wired to the `Normally Open (NO)` terminal of a 5V relay. The QNX software uses a high-impedance hardware trick to hold the circuit closed. If the OS panics or loses power, the relay snaps open, instantly stopping the motor.
-
 ### Circuit Diagram
 <img width="3000" height="1349" alt="circuit_image" src="https://github.com/user-attachments/assets/eb21b719-d1ba-4e19-9582-49ae62b38281" />
 
