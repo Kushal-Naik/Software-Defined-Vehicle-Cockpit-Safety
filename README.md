@@ -7,7 +7,7 @@ Software-Defined Vehical &amp; Cockpit Safety system on a Raspberry Pi 4 running
 
 This project is a bare-metal, real-time Software-Defined Vehicle (SDV) architecture focused on **Cockpit Safety**, built on the **QNX Microkernel**. It demonstrates true mixed-criticality by sandboxing heavy infotainment graphics, high-speed telemetry, and zero-latency autonomous braking across dedicated ARM Cortex-A72 cores.
 
-## 🧠 System Architecture
+## System Architecture
 
 The system utilizes QNX's `ThreadCtl` and POSIX scheduling to strictly pin processes to specific CPU cores, ensuring that non-critical systems (like the UI) can never steal execution time from safety-critical systems (like the brakes).
 
@@ -21,7 +21,7 @@ The system utilizes QNX's `ThreadCtl` and POSIX scheduling to strictly pin proce
 ### High-Availability Manager (HAM)
 Core 2 runs a High-Availability Manager that actively supervises the Core 3 Guardian process. If the safety system crashes (e.g., due to a memory fault), the HAM detects the `SIGSEGV` and instantly resurrects the braking system within milliseconds, before the vehicle can physically react.
 
-## 🔌 Hardware & Sensor Fusion
+## Hardware & Sensor Fusion
 
 The system reads directly from the **BCM2711 GPIO registers** via `mmap_device_io` to achieve sub-microsecond latency, completely bypassing standard high-level drivers.
 
@@ -42,14 +42,17 @@ The system reads directly from the **BCM2711 GPIO registers** via `mmap_device_i
 | **Motor Relay** | IN1 | Pin 13 | Active-LOW, requires 5V VCC on coil. |
 | **Buzzer** | (+) | Pin 15 | Requires 100Ω series resistor. |
 
-## 🚀 Build & Deployment
+## Build & Deployment
 
 ### Prerequisites
 * Raspberry Pi 4B flashed with **QNX SDP 8.0**.
 * Network/SSH access to the QNX target as `qnxuser` or `root`.
-* I2C drivers enabled (`su -c "i2c-bcm2711 &"`).
+* **QNX Momentics IDE** (Recommended for deployment and debugging).
 
-### Compilation
-Compile the unified architecture using the QNX AArch64 compiler:
-```bash
-qcc -Vgcc_ntoaarch64le -O3 -g -o sdv_cockpit src/sdv_cockpit.c -lm -lc
+### Compilation Using QNX Momentics IDE
+1. Open the QNX Momentics IDE.
+2. Select **File > Import > General > Existing Projects into Workspace**.
+3. Browse to this repository's folder and click **Finish**.
+4. Right-click the project in the Project Explorer and select **Properties > QNX C/C++ Project**. Ensure the Build Architecture is set to **aarch64le**.
+5. Click the **Build** hammer icon. 
+6. Set up a Target connection to your Raspberry Pi and deploy the binary directly via the IDE's Run/Debug Configurations.
