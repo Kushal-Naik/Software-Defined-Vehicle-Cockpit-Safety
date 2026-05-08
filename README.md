@@ -21,16 +21,18 @@ The system utilizes QNX's `ThreadCtl` and POSIX scheduling to strictly pin proce
 ### High-Availability Manager (HAM)
 Core 2 runs a High-Availability Manager that actively supervises the Core 3 Guardian process. If the safety system crashes (e.g., due to a memory fault), the HAM detects the `SIGSEGV` and instantly resurrects the braking system within milliseconds, before the vehicle can physically react.
 
-## Hardware & Sensor Fusion
+## 🔌 Hardware & Sensor Fusion
 
-The system reads directly from the **BCM2711 GPIO registers** via `mmap_device_io` to achieve sub-microsecond latency, completely bypassing standard high-level drivers.
+The system reads directly from the **BCM2711 GPIO registers** via `mmap_device_io` to achieve sub-microsecond latency, completely bypassing standard high-level Linux drivers.
 
-* **Autonomous Braking:** Fused logic requires BOTH the **HC-SR501 PIR** (Motion) and **HC-SR04 Ultrasonic** (Proximity <10cm) to trigger simultaneously before firing an IPC pulse to cut motor power.
-* **Failsafe Relay:** The motor is wired to the `Normally Open (NO)` terminal of a 5V relay. The QNX software uses a high-impedance hardware trick to hold the circuit closed. If the OS panics or loses power, the relay snaps open, instantly stopping the motor.
-* **Crash Detection:** **MPU6050** monitors X/Y/Z deltas. An impact (>3000g) triggers a worst-case override, cutting the motor and illuminating the crash indicator.
+### Sensors Used
+* **HC-SR04 Ultrasonic Sensor:** Acts as the primary proximity "eye" for autonomous braking, constantly scanning for obstacles under 10cm.
+* **HC-SR501 PIR Motion Sensor:** Acts as the motion "guard" to confirm human presence before braking, eliminating false positives in the sensor fusion algorithm.
+* **MPU6050 6-DoF Accelerometer/Gyroscope:** Monitors vehicle inertia via I2C and detects high-G impacts (>3000 threshold) to trigger the last-resort crash failsafe.
+* **A3144 Hall Effect Sensor:** Measures the magnetic pulses of the motor/wheel assembly to calculate real-time RPM for the telemetry dashboard.
+* **TTP223 Capacitive Touch Sensor:** Serves as the highest-priority physical hardware interrupt (`SCHED_FIFO p=63`) to manually toggle the motor state.
 
 ### Master Wiring Matrix
-
 | Component | Signal | Pi Physical Pin | Notes |
 | :--- | :--- | :--- | :--- |
 | **OLED (I2C)** | SDA / SCL | Pin 3 / 5 | Shared I2C1 Bus. |
