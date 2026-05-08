@@ -51,82 +51,8 @@ ress `0x68`). |
 | **Motor Relay** | IN1 | Pin 13 | Active-LOW, requires 5V VCC on coil. |
 | **Buzzer** | (+) | Pin 15 | Requires 100Ω series resistor. |
 
-### ⚡ Hardware Wiring Schematic
-```mermaid
-graph LR
-    %% Define styles
-    classDef power fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff;
-    classDef ground fill:#34495e,stroke:#2c3e50,stroke-width:2px,color:#fff;
-    classDef pi fill:#27ae60,stroke:#2ecc71,stroke-width:2px,color:#fff;
-    classDef sensor fill:#2980b9,stroke:#3498db,stroke-width:2px,color:#fff;
-    classDef warning fill:#f39c12,stroke:#d35400,stroke-width:2px,color:#fff;
-
-    subgraph Raspberry Pi 4B GPIO
-        3V3[Pin 1 - 3.3V]:::power
-        5V[Pins 2/4 - 5V]:::power
-        GND[Pins 6/14/20 - GND]:::ground
-        
-        I2C_SDA[Pin 3 - GPIO 2]:::pi
-        I2C_SCL[Pin 5 - GPIO 3]:::pi
-        
-        P16[Pin 16 - GPIO 23]:::pi
-        P18[Pin 18 - GPIO 24]:::pi
-        P22[Pin 22 - GPIO 25]:::pi
-        P11[Pin 11 - GPIO 17]:::pi
-        P12[Pin 12 - GPIO 18]:::pi
-        P13[Pin 13 - GPIO 27]:::pi
-        P15[Pin 15 - GPIO 22]:::pi
-        P29[Pin 29 - GPIO 5]:::pi
-    end
-
-    subgraph 3.3V Logic Bus
-        OLED[OLED Display]:::sensor
-        MPU[MPU6050]:::sensor
-        HALL[Hall Effect + 10kΩ Pull-up]:::sensor
-        TOUCH[TTP223 Touch]:::sensor
-    end
-
-    subgraph 5V Logic Bus
-        SONAR[HC-SR04 Sonar]:::sensor
-        PIR[HC-SR501 PIR]:::sensor
-        RELAY[2-Channel Relay]:::sensor
-    end
-
-    subgraph Actuators & Indicators
-        BUZZER[Active Buzzer]:::sensor
-        LED[Crash LED Red]:::sensor
-        MOTOR((12V DC Motor))
-        BATT((External 12V Batt))
-    end
-
-    %% Power Routing
-    3V3 -.-> OLED & MPU & HALL & TOUCH
-    5V -.-> SONAR & PIR & RELAY
-    GND -.-> OLED & MPU & HALL & TOUCH & SONAR & PIR & RELAY & BUZZER & LED
-
-    %% I2C Routing
-    I2C_SDA <-->|SDA| OLED & MPU
-    I2C_SCL -->|SCL| OLED & MPU
-
-    %% Sensor Logic Routing
-    P16 -->|TRIG Out| SONAR
-    SONAR -->|ECHO 5V| VDIV[1kΩ + 2kΩ Voltage Divider]:::warning
-    VDIV -->|Safe 3.3V| P18
-    
-    PIR -->|Motion 3.3V| P22
-    HALL -->|RPM Pulse| P11
-    TOUCH -->|Touch High| P12
-
-    %% Actuator Routing
-    P13 -->|Active-Low / High-Z| RELAY
-    P15 -->|100Ω Resistor| BUZZER
-    P29 -->|330Ω Resistor| LED
-
-    %% External Motor Circuit
-    RELAY -- COM --> BATT
-    RELAY -- NO --> MOTOR
-    BATT -. Ground .- MOTOR
-```
+### Circuit Diagram
+<img width="3000" height="1349" alt="circuit_image" src="https://github.com/user-attachments/assets/eb21b719-d1ba-4e19-9582-49ae62b38281" />
 
 ## Build & Deployment
 
