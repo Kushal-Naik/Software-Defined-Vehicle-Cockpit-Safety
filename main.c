@@ -1,6 +1,6 @@
 /*
 * ╔══════════════════════════════════════════════════════════════════╗
-* ║  AEGIS-PI v9.1 — MULTI-PROCESS QUAD-CORE ARCHITECTURE            ║
+* ║                  MULTI-PROCESS QUAD-CORE ARCHITECTURE            ║
 * ║  ──────────────────────────────────────────────────────────────  ║
 * ║  CORE 0: Guardian Process (Actuators)                            ║
 * ║  CORE 1: HAM Watchdog + CLI Terminal                             ║
