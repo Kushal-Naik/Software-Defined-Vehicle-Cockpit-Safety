@@ -19,7 +19,7 @@ The system utilizes QNX's `ThreadCtl` and POSIX scheduling to strictly pin proce
 | **Core 3** | `Guardian` | `SCHED_FIFO` | p=63 | Receives IPC pulses; actuates motor relay & brakes. |
 
 ## Flow Chart
-<img width="786" height="879" alt="image" src="https://github.com/user-attachments/assets/aa19b9c7-6284-45c4-8dc8-cb348e29bdd9" />
+
 
 ### High-Availability Manager (HAM)
 Core 2 runs a High-Availability Manager that actively supervises the Core 3 Guardian process. If the safety system crashes (e.g., due to a memory fault), the HAM detects the `SIGSEGV` and instantly resurrects the braking system within milliseconds, before the vehicle can physically react.
