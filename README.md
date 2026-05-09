@@ -18,7 +18,8 @@ The system utilizes QNX's `ThreadCtl` and POSIX scheduling to strictly pin proce
 | **Core 2** | `HAM Watchdog` | `SCHED_FIFO` | p=40 | 0% CPU Watchdog. Resurrects crashed safety systems. |
 | **Core 3** | `Guardian` | `SCHED_FIFO` | p=63 | Receives IPC pulses; actuates motor relay & brakes. |
 
-## Flow Chart
+## Block Diagram
+<img width="835" height="844" alt="image" src="https://github.com/user-attachments/assets/e01be599-f0de-4886-8884-3df2d7954133" />
 
 
 ### High-Availability Manager (HAM)
