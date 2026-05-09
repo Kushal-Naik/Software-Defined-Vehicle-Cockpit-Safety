@@ -68,3 +68,11 @@ The system reads directly from the **BCM2711 GPIO registers** via `mmap_device_i
 4. Right-click the project in the Project Explorer and select **Properties > QNX C/C++ Project**. Ensure the Build Architecture is set to **aarch64le**.
 5. Click the **Build** hammer icon. 
 6. Set up a Target connection to your Raspberry Pi and deploy the binary directly via the IDE's Run/Debug Configurations.
+
+## System Profiling
+### CPU Activity
+<img width="1352" height="616" alt="image" src="https://github.com/user-attachments/assets/6f9f6788-4ca8-46e8-9041-52e94acc902f" />
+### System Activity
+<img width="1353" height="624" alt="image" src="https://github.com/user-attachments/assets/e557a486-1f72-4114-b1eb-3d043aa4d49b" />
+
+
